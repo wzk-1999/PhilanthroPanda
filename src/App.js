@@ -1,9 +1,9 @@
 import './App.css';
-import ResponsiveAppBar from './ResponsiveAppBar';
-import JobCard from './JobCard';
+import ResponsiveAppBar from './components/ResponsiveAppBar';
+import JobCard from './components/JobCard';
 import { Grid } from "@mui/material";
 import Box from '@mui/material/Box';
-import jobs from './db';
+import jobs from './constants/db';
 
 function App() {
   const selectJob = (event) => {

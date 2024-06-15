@@ -10,7 +10,7 @@ const jobs = [
             "title":"ReStore Associate",
             "description":"The ReStore Associate accepts donations received at the store, from entry into the store to pricing and stocking inventory onto the sales floor, and for providing an excellent customer service experience to both residential and corporate donors.Please fill out our volunteer application, this can be found here: https://habitatgw.ca/volunteer/apply-to-volunteer/",
             "company":"HABITAT FOR HUMANITY GUELPH WELLINGTON",
-            "imageurl":"https://hgtvhome.sndimg.com/content/dam/images/hgtv/fullset/2019/8/12/0/Original_Habitat-for-Humanity_group-shot-workers.jpg.rend.hgtvcom.616.411.suffix/1565625346290.jpeg"
+            "imageurl":"https://www.habitathillsborough.org/wp-content/uploads/2018/09/Blog-page-ReStore-hiring.jpg"
         },{
             "id": 3,
             "title":"Kitchen Salvage Service Crew (aka Deconstruction)",
