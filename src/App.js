@@ -1,34 +1,17 @@
-import './App.css';
-import ResponsiveAppBar from './components/ResponsiveAppBar';
-import JobCard from './components/JobCard';
-import { Grid } from "@mui/material";
-import Box from '@mui/material/Box';
-import jobs from './constants/db';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from './components/Home';
+import JobDescription from './components/JobDescription';
+import Profile from './components/Profile';
 
 function App() {
-  const selectJob = (event) => {
-    console.log(event.currentTarget.id);
-  };
   return (
-    <div className="App">
-      
-      <ResponsiveAppBar></ResponsiveAppBar>
-      <Box sx={{ my: 2,  mx: 30}}>
-        <Grid container spacing={2}>
-          {jobs.map((item) => (
-            <Grid item xs={6} key={item.id} id={item.id} onClick={selectJob}>
-              <JobCard 
-                title={item.title}
-                description={item.description}                
-                company={item.company}
-                imageurl={item.imageurl}
-              ></JobCard>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-      
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/jobdescription" element={<JobDescription />} />
+        <Route path="/profile" element={<Profile />} />
+      </Routes>
+    </Router>
   );
 }
 

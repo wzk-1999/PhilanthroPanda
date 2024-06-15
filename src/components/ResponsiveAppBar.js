@@ -13,6 +13,8 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
+import { useNavigate } from 'react-router-dom';
+
 const pages = ['Best-Matches', 'Most-Recent', 'Applied', 'Saved'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -31,20 +33,35 @@ function ResponsiveAppBar() {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const navigate = useNavigate();
+  
+  const handleCloseUserMenu = (event) => {
     setAnchorElUser(null);
+    if(event.currentTarget.id == 'Profile'){
+      navigate('/profile');
+    }
   };
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+        <Box
+            component="img"
+            sx={{
+              height: 45,
+              width: 45,
+              m:2
+            }}
+            alt="The house from the offer."
+            src={require('../static/icons/panda.png')}
+          />
           <Typography
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href=""
+            onClick={() => navigate('/') }
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -148,7 +165,7 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} id={setting} onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
