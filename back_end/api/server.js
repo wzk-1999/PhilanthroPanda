@@ -103,7 +103,7 @@ app.post("/register/organization", async (req, res) => {
 const jwt = require("jsonwebtoken"); // Import JSON Web Token
 
 // Secret key for JWT
-const jwtSecret = "jwt_secret";
+const jwtSecret = process.env.jwt_secret;
 
 // User login endpoint
 app.post("/login", async (req, res) => {
@@ -136,6 +136,7 @@ app.post("/login", async (req, res) => {
         email: user.email,
         phone: user.phone,
         address: user.address,
+        role: user.role,
       },
     });
   } catch (err) {

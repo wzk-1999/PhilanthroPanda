@@ -28,14 +28,23 @@
 // export default jobs;
 
 const { Client } = require("pg");
+require("dotenv").config();
 
 const PhilanthroPanda = new Client({
-  host: "localhost",
-  user: "postgres",
-  password: "123456",
-  database: "PhilanthroPanda",
+  host: process.env.host,
+  user: process.env.user,
+  password: process.env.password,
+  database: process.env.database,
   port: 5432,
 });
+
+// console.log("Database config:", {
+//   host: process.env.host,
+//   user: process.env.user,
+//   password: process.env.password,
+//   database: process.env.database,
+//   port: 5432,
+// });
 
 PhilanthroPanda.connect((err) => {
   if (err) throw err;
