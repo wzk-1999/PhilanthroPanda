@@ -2,32 +2,12 @@ import ResponsiveAppBar from "./ResponsiveAppBar";
 import JobCard from "./JobCard";
 import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
-// import jobs from '../constants/db';
+import useJobs from "../constants/jobs";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 
-function Home() {
+const Home = () => {
   const navigate = useNavigate();
-  const [jobs, setJobs] = useState([]);
-
-  useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const response = await fetch("http://localhost:3001/api/jobs"); // Use full URL if necessary
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        // const response = await fetch("/api/jobs");
-        const data = await response.json();
-        console.log("Fetched jobs:", data); // Debugging log
-        setJobs(data);
-      } catch (error) {
-        console.error("Error fetching jobs:", error);
-      }
-    };
-
-    fetchJobs();
-  }, []);
+  const jobs = useJobs();
   return (
     <div className="App">
       <ResponsiveAppBar></ResponsiveAppBar>
@@ -39,7 +19,7 @@ function Home() {
               xs={6}
               key={item.id}
               id={item.id}
-              onClick={() => navigate(`/jobdescription/?id=${item.id}`)}
+              onClick={() => navigate(`/jobdescription/${item.id}`)}
             >
               <JobCard
                 title={item.title}
@@ -53,6 +33,6 @@ function Home() {
       </Box>
     </div>
   );
-}
+};
 
 export default Home;

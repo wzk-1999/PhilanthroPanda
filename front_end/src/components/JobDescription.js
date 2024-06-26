@@ -7,11 +7,12 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 
-import jobs from "../constants/db";
+import useJobs from "../constants/jobs.js";
 
 export default function JobDescription() {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
+  const jobs = useJobs();
   const jb = jobs.find((jb) => {
     return jb.id === id;
   });

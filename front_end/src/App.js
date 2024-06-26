@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from './components/Home';
-import JobDescription from './components/JobDescription';
-import Profile from './components/Profile';
+import Home from "./components/Home";
+import JobDescription from "./components/JobDescription";
+import Profile from "./components/Profile";
 
 function App() {
   return (
