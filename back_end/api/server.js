@@ -67,7 +67,7 @@ app.post("/register/volunteer", async (req, res) => {
 
 // Register of organization
 app.post("/register/organization", async (req, res) => {
-  const { name, email, password, phone, address } = req.body;
+  const { name, email, password, phone, address,website } = req.body;
 
   try {
     const checkExists = "SELECT * FROM users WHERE email = $1"; // Query with parameterized query
@@ -80,6 +80,15 @@ app.post("/register/organization", async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     hashedPassword = await bcrypt.hash(password, salt);
 
+    const insertOrgQuery =
+      "INSERT INTO organizations(name, email, phone, address,website) VALUES($1, $2, $3, $4, $5)";
+    await db.query(insertOrgQuery, [
+      name,
+      email,
+      phone,
+      address,
+      website
+    ]);
     // Insert new student
     const insertStudentQuery =
       "INSERT INTO users(name, email, password, phone, address,role) VALUES($1, $2, $3, $4, $5,$6)";

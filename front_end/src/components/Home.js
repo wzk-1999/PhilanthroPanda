@@ -9,7 +9,7 @@ const Home = () => {
   const navigate = useNavigate();
   const jobs = useJobs();
   return (
-    <div className="App">
+    <div>
       <ResponsiveAppBar></ResponsiveAppBar>
       <Box sx={{ my: 2, mx: 30 }}>
         <Grid container spacing={2}>
@@ -19,7 +19,7 @@ const Home = () => {
               xs={6}
               key={item.id}
               id={item.id}
-              onClick={() => navigate(`/jobdescription/${item.id}`)}
+              onClick={() => navigate(`/jobdescription?id=${item.id}`)}
             >
               <JobCard
                 title={item.title}

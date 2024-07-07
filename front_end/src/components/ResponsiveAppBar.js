@@ -39,6 +39,8 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
     if (event.currentTarget.id === "Profile") {
       navigate("/profile");
+    } else if(event.currentTarget.id === "Logout"){
+      navigate("/");
     }
   };
 
