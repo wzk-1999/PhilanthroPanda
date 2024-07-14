@@ -67,7 +67,7 @@ app.post("/register/volunteer", async (req, res) => {
 
 // Register of organization
 app.post("/register/organization", async (req, res) => {
-  const { name, email, password, phone, address,website } = req.body;
+  const { name, email, password, phone, address, website } = req.body;
 
   try {
     const checkExists = "SELECT * FROM users WHERE email = $1"; // Query with parameterized query
@@ -82,13 +82,7 @@ app.post("/register/organization", async (req, res) => {
 
     const insertOrgQuery =
       "INSERT INTO organizations(name, email, phone, address,website) VALUES($1, $2, $3, $4, $5)";
-    await db.query(insertOrgQuery, [
-      name,
-      email,
-      phone,
-      address,
-      website
-    ]);
+    await db.query(insertOrgQuery, [name, email, phone, address, website]);
     // Insert new student
     const insertStudentQuery =
       "INSERT INTO users(name, email, password, phone, address,role) VALUES($1, $2, $3, $4, $5,$6)";
@@ -134,13 +128,19 @@ app.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
+    // // Payload for the token
+    // const payload = { id: user.user_id };
+    // console.log("JWT Payload:", payload); // Log the payload
+
     // Generate JWT token
-    const token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user.user_id }, jwtSecret, {
+      expiresIn: "1h",
+    });
 
     res.json({
       token,
       user: {
-        id: user.id,
+        id: user.user_id,
         name: user.name,
         email: user.email,
         phone: user.phone,
@@ -174,6 +174,63 @@ function verifyToken(req, res, next) {
     res.status(401).json({ message: "Token is not valid" });
   }
 }
+
+app.post("/apply/:id", async (req, res) => {
+  const { user_id } = req.body;
+  const job_id = req.params.id;
+  // console.log(user_id);
+  try {
+    // Check if application exists
+    const checkUserQuery =
+      "SELECT * FROM applications WHERE opportunity_id = $1 and user_id=$2";
+    // console.log(checkUserQuery);
+    const { rows } = await db.query(checkUserQuery, [job_id, user_id]);
+    if (rows.length > 0) {
+      return res.status(400).json({
+        message: "you have already applied this job, check for the status",
+      });
+    }
+
+    // Insert new application
+    const insertStudentQuery =
+      "INSERT INTO applications(opportunity_id, user_id, status) VALUES($1, $2, $3)";
+    await db.query(insertStudentQuery, [job_id, user_id, "pending"]);
+
+    res.status(200).json({
+      message: "Application submitted successfully",
+    });
+  } catch (err) {
+    console.error("Error application in application table:", err);
+    res.status(500).json({
+      message: "Server error",
+    });
+  }
+});
+
+app.post("/trackStatus/:id", async (req, res) => {
+  const { user_id } = req.body;
+  const jobId = req.params.id; // Get the job id from request parameters
+  try {
+    const queryText = `select j.title 
+                      ,j.company 
+                      ,a.application_date 
+                      ,a.status 
+                  from 
+                  jobs j
+                  join 
+                  applications a 
+                  on j.id =a.opportunity_id 
+                  where user_id =$1
+                  and opportunity_id =$2 limit 1`; // Query with parameterized query
+    const { rows } = await db.query(queryText, [user_id, jobId]); // Execute query with job id
+    res.json(rows); // Send JSON response with job details
+  } catch (error) {
+    console.error("Failed to fetch status info with id", jobId, error);
+    res
+      .status(500)
+      .json({ error: "Failed to fetch status info with id " + jobId });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

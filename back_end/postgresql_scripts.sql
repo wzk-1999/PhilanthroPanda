@@ -1,17 +1,143 @@
+
+-- public.applications definition
+
+-- Drop table
+
+drop TABLE if exists public.applications CASCADE;
+
+CREATE TABLE if not exists public.applications (
+	application_id serial4 NOT NULL,
+	opportunity_id int4 NULL,
+	user_id int4 NULL,
+	application_date timestamp DEFAULT CURRENT_TIMESTAMP NULL,
+	status varchar(50) NOT NULL,
+	CONSTRAINT applications_pkey PRIMARY KEY (application_id),
+	CONSTRAINT applications_status_check CHECK (((status)::text = ANY ((ARRAY['pending'::character varying, 'accepted'::character varying, 'rejected'::character varying])::text[])))
+);
+
+
+
+
+-- public.organizations definition
+
+-- Drop table
+
+DROP TABLE if exists public.organizations CASCADE;
+
+CREATE TABLE if not exists public.organizations (
+	organization_id serial4 NOT NULL,
+	"name" varchar(255) NOT NULL,
+	email varchar(255) NOT NULL,
+	phone varchar(20) NULL,
+	address text NULL,
+	website varchar(255) NULL,
+	description text NULL,
+	CONSTRAINT organizations_email_key UNIQUE (email),
+	CONSTRAINT organizations_pkey PRIMARY KEY (organization_id)
+);
+
+-- public.reviews definition
+
+-- Drop table
+
+DROP TABLE if exists public.reviews CASCADE;
+
+CREATE TABLE if not exists public.reviews (
+	review_id serial4 NOT NULL,
+	opportunity_id int4 NULL,
+	user_id int4 NULL,
+	rating int4 NULL,
+	"comment" text NULL,
+	review_date timestamp DEFAULT CURRENT_TIMESTAMP NULL,
+	CONSTRAINT reviews_pkey PRIMARY KEY (review_id),
+	CONSTRAINT reviews_rating_check CHECK (((rating >= 1) AND (rating <= 5)))
+);
+
+
+
+
+-- public.skills definition
+
+-- Drop table
+
+DROP TABLE if exists public.skills CASCADE;
+
+CREATE TABLE if not exists public.skills (
+	skill_id serial4 NOT NULL,
+	"name" varchar(255) NOT NULL,
+	CONSTRAINT skills_pkey PRIMARY KEY (skill_id)
+);
+
+-- public.user_skills definition
+
+-- Drop table
+
+DROP TABLE if exists public.user_skills CASCADE;
+
+CREATE TABLE if not exists public.user_skills (
+	user_id int4 NOT NULL,
+	skill_id int4 NOT NULL,
+	CONSTRAINT user_skills_pkey PRIMARY KEY (user_id, skill_id)
+);
+
+
+
+
+-- public.users definition
+
+-- Drop table
+
+DROP TABLE if exists public.users CASCADE;
+
+CREATE TABLE if not exists public.users (
+	user_id serial4 NOT NULL,
+	"name" varchar(255) NOT NULL,
+	email varchar(255) NOT NULL,
+	"password" varchar(255) NOT NULL,
+	phone varchar(20) NULL,
+	address text NULL,
+	"role" varchar(50) NOT NULL,
+	CONSTRAINT users_email_key UNIQUE (email),
+	CONSTRAINT users_pkey PRIMARY KEY (user_id),
+	CONSTRAINT users_role_check CHECK (((role)::text = ANY ((ARRAY['volunteer'::character varying, 'organization'::character varying])::text[])))
+);
+
+-- public.volunteer_opportunities definition
+
+-- Drop table
+
+DROP TABLE if exists public.volunteer_opportunities CASCADE;
+
+CREATE TABLE if not exists public.volunteer_opportunities (
+	opportunity_id serial4 NOT NULL,
+	organization_id int4 NULL,
+	title varchar(255) NOT NULL,
+	description text NULL,
+	"location" varchar(255) NULL,
+	start_date date NULL,
+	end_date date NULL,
+	required_skills text NULL,
+	requirements text NULL,
+	CONSTRAINT volunteer_opportunities_pkey PRIMARY KEY (opportunity_id)
+);
+
+
 -- public.jobs definition
 
 -- Drop table
 
--- DROP TABLE public.jobs;
+ DROP TABLE if exists public.jobs CASCADE;
 
-CREATE TABLE public.jobs (
-	id int4 DEFAULT nextval('newtable_id_seq'::regclass) NOT NULL,
+CREATE TABLE if not exists public.jobs (
+	id serial4 NOT NULL,
 	title varchar(256) NULL,
 	description text NULL,
 	company varchar(256) NULL,
 	imageurl text NULL,
 	CONSTRAINT newtable_pk PRIMARY KEY (id)
 );
+
+
 
 INSERT INTO public.jobs
 (id, title, description, company, imageurl)
