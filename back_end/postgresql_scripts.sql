@@ -151,3 +151,6 @@ VALUES(3, 'Kitchen Salvage Service Crew (aka Deconstruction)', 'The Kitchen Salv
 INSERT INTO public.jobs
 (id, title, description, company, imageurl)
 VALUES(4, 'Be a STEM Role Model - Guelph', 'Volunteering with CAGIS is a rewarding opportunity to inspire the next generation of STEM leaders. By sharing your knowledge and passion, you can spark curiosity and encourage young minds to explore the vast possibilities within science, technology, engineering, and mathematics. Whether leading interactive workshops, organizing field trips, or providing mentorship, your contribution will have a lasting impact on these young enthusiasts’ educational journey and career choices. Together, we can create an inclusive and supportive environment that empowers every participant to reach their full potential.', 'CANADIAN ASSOCIATION FOR GIRLS IN SCIENCE', 'https://www.womenintech.co.uk/wp-content/uploads/2019/03/cc1af223-3367-4cdb-bc4a-d4cf4a503fcb-768x385.png');
+
+ALTER TABLE public.users ADD organization_id int4 NULL;
+COMMENT ON COLUMN public.users.organization_id IS 'organization id';
