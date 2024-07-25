@@ -4,9 +4,15 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const port = 3001; // Change the port if necessary
-
 const db = require("../repository/db");
+const bodyParser = require("body-parser");
+app.use(bodyParser.json({ limit: '50mb' })); // Add this line
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
 app.use(cors()); // Enable CORS
+
+app.use(express.json());
+
 app.get("/api/jobs", async (req, res) => {
   try {
     const jobs = await db.query(`SELECT a.title ,
@@ -57,6 +63,7 @@ app.use(express.json()); // Middleware to parse JSON bodies
 
 // Add new job
 app.post("/Add/job", async (req, res) => {
+  debugger;
   const { title, description, image, image_type, location, user_id } = req.body;
   try {
     // Insert new job

@@ -7,10 +7,7 @@ import Container from '@mui/material/Container';
 import NonProfitHeader from './NonProfitHeader';
 import Stack from "@mui/material/Stack";
 
-
 import { useNavigate } from "react-router-dom";
-
-
 
 function VolunteerRegistration() {
   
@@ -45,7 +42,6 @@ function VolunteerRegistration() {
     if (!formData.location) {
       newErrors.email = 'Location is required';
     }
-    formData.name = formData.firstName + ' ' + formData.lastName;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -57,6 +53,9 @@ function VolunteerRegistration() {
     const reader = new FileReader();
 
     reader.onloadend = () => {
+      let body = reader.result.split(',');
+      formData.image_type = body[0]+',';
+      formData.image = body[1];
       setImageUrl(reader.result);
     };
 
@@ -93,7 +92,7 @@ function VolunteerRegistration() {
   return (
     <>
       <NonProfitHeader headerNavigation="nonprofithome"></NonProfitHeader>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" width="m">
         <Box
           sx={{
             marginTop: 8,
@@ -150,10 +149,10 @@ function VolunteerRegistration() {
               helperText={errors.location}
             />
             
-            <Stack direction="row" alignItems="center" spacing={2}>
+            <Stack direction="column" alignItems="center" spacing={2}>
                 <label htmlFor="upload-image">
-                <Button variant="contained" component="span">
-                    Upload
+                <Button variant="outlined" component="span">
+                    Upload Image
                 </Button>
                 <input
                     id="upload-image"
@@ -163,8 +162,10 @@ function VolunteerRegistration() {
                     onChange={handleFileUpload}
                 />
                 </label>
-                {imageUrl && <img src={imageUrl} alt="Uploaded Image" height="300" />}
+                
+                {imageUrl && <img width="m" src={imageUrl} alt="Uploaded Image" height="300" />}
             </Stack>
+            
             
             <Button
               type="submit"
@@ -175,11 +176,13 @@ function VolunteerRegistration() {
             >
               Post New Job
             </Button>
+            
             {message && (
-              <Typography color="error" sx={{ mt: 2 }}>
-                {message}
-              </Typography>
+            <Typography color="error" sx={{ mt: 2 }}>
+              {message}
+            </Typography>
             )}
+            
           </Box>
         </Box>
       </Container>
