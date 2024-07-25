@@ -154,3 +154,17 @@ VALUES(4, 'Be a STEM Role Model - Guelph', 'Volunteering with CAGIS is a rewardi
 
 ALTER TABLE public.users ADD organization_id int4 NULL;
 COMMENT ON COLUMN public.users.organization_id IS 'organization id';
+
+ALTER TABLE public.jobs ADD "location" varchar(100) NULL;
+COMMENT ON COLUMN public.jobs."location" IS 'location city';
+ALTER TABLE public.jobs ADD user_id int4 NULL;
+COMMENT ON COLUMN public.jobs.user_id IS 'user id to link with users table';
+
+ALTER TABLE public.jobs DROP COLUMN company;
+
+ALTER TABLE public.jobs RENAME COLUMN imageurl TO image;
+ALTER TABLE public.jobs ALTER COLUMN image TYPE bytea USING image::bytea;
+
+ALTER TABLE public.jobs ADD image_type varchar(100) NULL;
+COMMENT ON COLUMN public.jobs.image_type IS 'image type, format like: data:image/jpeg;base64';
+

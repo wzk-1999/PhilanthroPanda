@@ -9,7 +9,19 @@ const db = require("../repository/db");
 app.use(cors()); // Enable CORS
 app.get("/api/jobs", async (req, res) => {
   try {
-    const jobs = await db.query("SELECT * FROM jobs");
+    const jobs = await db.query(`SELECT a.title ,
+                        a.description ,
+                        a.image,
+                        a.image_type,
+                        a."location" ,
+                        o."name" organization_name 
+                        FROM jobs a
+                        left join
+                        users u 
+                        on a.user_id =u.user_id 
+                        left join 
+                        organizations o 
+                        on o.organization_id =u.organization_id`);
     res.json(jobs.rows);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch jobs" });
@@ -19,7 +31,20 @@ app.get("/api/jobs", async (req, res) => {
 app.get("/jobdescription/:id", async (req, res) => {
   const jobId = req.params.id; // Get the job id from request parameters
   try {
-    const queryText = "SELECT * FROM jobs WHERE id = $1"; // Query with parameterized query
+    const queryText = `SELECT a.title ,
+                        a.description ,
+                        a.image,
+                        a.image_type,
+                        a."location" ,
+                        o."name" organization_name 
+                        FROM jobs a
+                        left join
+                        users u 
+                        on a.user_id =u.user_id 
+                        left join 
+                        organizations o 
+                        on o.organization_id =u.organization_id 
+                        WHERE id = $1`; // Query with parameterized query
     const { rows } = await db.query(queryText, [jobId]); // Execute query with job id
     res.json(rows); // Send JSON response with job details
   } catch (error) {
@@ -30,6 +55,29 @@ app.get("/jobdescription/:id", async (req, res) => {
 const bcrypt = require("bcrypt");
 app.use(express.json()); // Middleware to parse JSON bodies
 
+// Add new job
+app.post("/Add/job", async (req, res) => {
+  const { title, description, image, image_type, location, user_id } = req.body;
+  try {
+    // Insert new job
+    const insertJobQuery =
+      "INSERT INTO jobs(title, description, image,image_type, location, user_id) VALUES($1, $2, $3, $4, $5,$6)";
+    await db.query(insertJobQuery, [
+      title,
+      description,
+      Buffer.from(image, "base64"),
+      image_type,
+      location,
+      user_id,
+    ]);
+
+    // Send a response back to the client
+    res.status(201).json({ message: "job added successfully" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
 // Register of volunteer
 app.post("/register/volunteer", async (req, res) => {
   const { name, email, password, phone, address } = req.body;
