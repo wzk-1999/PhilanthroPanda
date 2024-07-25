@@ -202,40 +202,46 @@ export default function JobDescription() {
               <Typography gutterBottom variant="subtitle2" component="div">
                 {job.company}
               </Typography>
+              <Typography gutterBottom variant="subtitle2" component="div">
+                Location : {job.location}
+              </Typography>
               <Typography variant="body2" color="text.secondary">
                 {job.description}
               </Typography>
             </CardContent>
           </CardActionArea>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              ml: 20,
+              gap: 2,
+              mr: 20,
+              mt: 5,
+              mb: 5
+            }}
+          >
+            {!applied && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleApplyClick}
+              >
+                Apply Now
+              </Button>
+            )}
+            {applied && (
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleTrackProgressClick}
+              >
+                Track Progress
+              </Button>
+            )}
+          </Box>
         </Card>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            ml: 5,
-            gap: 2,
-          }}
-        >
-          {!applied && (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleApplyClick}
-            >
-              Apply Now
-            </Button>
-          )}
-          {applied && (
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleTrackProgressClick}
-            >
-              Track Progress
-            </Button>
-          )}
-        </Box>
       </Box>
 
       {/* Modal Dialog */}

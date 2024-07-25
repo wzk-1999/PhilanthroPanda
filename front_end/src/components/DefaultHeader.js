@@ -6,8 +6,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useNavigate } from "react-router-dom";
 
-function DefaultHeader() {
+function DefaultHeader({headerNavigation}) {
   const navigate = useNavigate();
+  let link = headerNavigation ? '/'+headerNavigation : '/';
 
   return (
     <AppBar position="static">
@@ -24,7 +25,7 @@ function DefaultHeader() {
             noWrap
             component="a"
             href=""
-            onClick={() => navigate("/")}
+            onClick={() => navigate(link)}
             sx={{
               ml: 2,
               fontFamily: "monospace",

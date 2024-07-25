@@ -22,6 +22,9 @@ export default function JobCard(props) {
           <Typography gutterBottom variant="subtitle2" component="div">
             {props.company}
           </Typography>
+          <Typography gutterBottom variant="subtitle2" component="div">
+                Location : {props.location}
+              </Typography>
           <Typography variant="body2" color="text.secondary">
             {props.description}
           </Typography>

@@ -126,7 +126,7 @@ CREATE TABLE if not exists public.volunteer_opportunities (
 
 -- Drop table
 
- DROP TABLE if exists public.jobs CASCADE;
+DROP TABLE if exists public.jobs CASCADE;
 
 CREATE TABLE if not exists public.jobs (
 	id serial4 NOT NULL,
@@ -134,6 +134,7 @@ CREATE TABLE if not exists public.jobs (
 	description text NULL,
 	company varchar(256) NULL,
 	imageurl text NULL,
+	skill text NULL,
 	CONSTRAINT newtable_pk PRIMARY KEY (id)
 );
 

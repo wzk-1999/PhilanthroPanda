@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Typography, Grid, Paper, Box } from '@mui/material';
-import DefaultHeader from './DefaultHeader'; // Ensure the path is correct
+import NonProfitHeader from './NonProfitHeader'; // Ensure the path is correct
 
 const NonProfitHome = () => {
   const [jobs, setJobs] = useState([]);
@@ -31,7 +31,7 @@ const NonProfitHome = () => {
 
   return (
     <>
-      <DefaultHeader />
+      <NonProfitHeader headerNavigation="nonprofithome"/>
       <Container maxWidth="lg" sx={{ mt: 8 }}>
         <Typography variant="h4" sx={{ mb: 4 }}>
           Open Jobs

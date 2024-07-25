@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import DefaultHeader from './DefaultHeader';
 
+import { useNavigate } from "react-router-dom";
+
 function VolunteerRegistration() {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -19,6 +21,7 @@ function VolunteerRegistration() {
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
 
+  const navigate = useNavigate();
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({
@@ -66,7 +69,7 @@ function VolunteerRegistration() {
         if (response.ok) {
           const data = await response.json();
           setMessage('Registration successful!');
-          console.log(data);
+          navigate('/');
         } else {
           const errorData = await response.json();
           setMessage(`Registration failed: ${errorData.message}`);

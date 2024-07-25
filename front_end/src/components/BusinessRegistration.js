@@ -5,10 +5,11 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import DefaultHeader from './DefaultHeader'; // Make sure the path is correct
+import { useNavigate } from 'react-router-dom';
 
 function BusinessRegistration() {
   const [formData, setFormData] = useState({
-    businessName: '',
+    organizationName: '',
     name: '',
     email: '',
     phone: '',
@@ -21,6 +22,7 @@ function BusinessRegistration() {
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
 
+  const navigate = useNavigate();
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({
@@ -55,6 +57,7 @@ function BusinessRegistration() {
         const data = await response.json();
         setMessage('Registration successful!');
         console.log(data);
+        navigate('/');
       } else {
         const errorData = await response.json();
         setMessage(`Registration failed: ${errorData.message}`);
@@ -85,10 +88,10 @@ function BusinessRegistration() {
                 fullWidth
                 id="businessName"
                 label="Business Name"
-                name="businessName"
+                name="organizationName"
                 autoComplete="business-name"
                 autoFocus
-                value={formData.businessName}
+                value={formData.organizationName}
                 onChange={handleChange}
               />
               <TextField

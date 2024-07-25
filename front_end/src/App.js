@@ -5,7 +5,8 @@ import Profile from "./components/Profile";
 import BusinessRegistration from "./components/BusinessRegistration";
 import VolunteerRegistration from "./components/VolunteerRegistration";
 import HomePage from "./components/HomePage";
-import NonProfitHome from "./components/NonProfitHome"
+import NonProfitHome from "./components/NonProfitHome";
+import NewJob from "./components/NewJob"
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/businessregistration" element={<BusinessRegistration />} />
         <Route path="/volunteerregistration" element={<VolunteerRegistration />} />
         <Route path="/NonProfitHome" element={<NonProfitHome />} />
+        <Route path="/NewJob" element={<NewJob />} />
       </Routes>
     </Router>
   );
