@@ -47,11 +47,6 @@ export default function JobDescription() {
         console.error("Error fetching job:", error);
       }
     };
-    fetchJob();
-  }, []);
-
-  // Fetch user details (decode JWT)
-  useEffect(() => {
     const fetchUserDetails = () => {
       const token = localStorage.getItem("token");
       // console.log(token);
@@ -69,7 +64,10 @@ export default function JobDescription() {
       }
     };
     fetchUserDetails();
+    fetchJob();
   }, []);
+
+  // Fetch user details (decode JWT)
 
   // Check if user has already applied for this job
   useEffect(() => {
@@ -189,12 +187,6 @@ export default function JobDescription() {
       <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
         <Card sx={{ maxWidth: 900 }}>
           <CardActionArea>
-            <CardMedia
-              component="img"
-              height="400"
-              image={job.imageurl}
-              alt="green iguana"
-            />
             <CardContent>
               <Typography variant="h5" component="div">
                 {job.title}
@@ -205,8 +197,17 @@ export default function JobDescription() {
               <Typography gutterBottom variant="subtitle2" component="div">
                 Location : {job.location}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography sx={{
+                    maxheight: '400px', // set your desired height
+                    overflowY: 'auto', // enable vertical scrolling
+                    padding: '10px', // optional padding
+                    border: '1px solid #ccc', // optional border for better visibility
+                    borderRadius: '4px', // optional border radius
+                  }} variant="body2" color="text.secondary">
                 {job.description}
+              </Typography>
+              <Typography sx={{mt : 2}} variant="body2" color="text.secondary">
+                Skills Required : {job.skills}
               </Typography>
             </CardContent>
           </CardActionArea>

@@ -16,10 +16,12 @@ app.use(express.json());
 app.get("/api/jobs", async (req, res) => {
   try {
     const jobs = await db.query(`SELECT a.title ,
+                        a.id,
                         a.description ,
                         a.image,
                         a.image_type,
-                        a."location" ,
+                        a.location ,
+                        a.skills,
                         o."name" organization_name 
                         FROM jobs a
                         left join
@@ -41,7 +43,8 @@ app.get("/jobdescription/:id", async (req, res) => {
                         a.description ,
                         a.image,
                         a.image_type,
-                        a."location" ,
+                        a.location ,
+                        a.skills,
                         o."name" organization_name 
                         FROM jobs a
                         left join
@@ -63,8 +66,7 @@ app.use(express.json()); // Middleware to parse JSON bodies
 
 // Add new job
 app.post("/Add/job", async (req, res) => {
-  debugger;
-  const { title, description, image, image_type, location, user_id } = req.body;
+  /*const { title, description, image, image_type, location, user_id } = req.body;
   try {
     // Insert new job
     const insertJobQuery =
@@ -74,6 +76,25 @@ app.post("/Add/job", async (req, res) => {
       description,
       Buffer.from(image, "base64"),
       image_type,
+      location,
+      user_id,
+    ]);
+
+    // Send a response back to the client
+    res.status(201).json({ message: "job added successfully" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }*/
+  const { title, description, skills, location, user_id } = req.body;
+  try {
+    // Insert new job
+    const insertJobQuery =
+      "INSERT INTO jobs(title, description, skills, location, user_id) VALUES($1, $2, $3, $4, $5)";
+    await db.query(insertJobQuery, [
+      title,
+      description,
+      skills,
       location,
       user_id,
     ]);
@@ -287,7 +308,6 @@ app.post("/trackStatus/:id", async (req, res) => {
   const jobId = req.params.id; // Get the job id from request parameters
   try {
     const queryText = `select j.title 
-                      ,j.company 
                       ,a.application_date 
                       ,a.status 
                   from 
@@ -295,7 +315,7 @@ app.post("/trackStatus/:id", async (req, res) => {
                   join 
                   applications a 
                   on j.id =a.opportunity_id 
-                  where user_id =$1
+                  where a.user_id =$1
                   and opportunity_id =$2 limit 1`; // Query with parameterized query
     const { rows } = await db.query(queryText, [user_id, jobId]); // Execute query with job id
     res.json(rows); // Send JSON response with job details

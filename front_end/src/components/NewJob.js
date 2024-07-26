@@ -8,6 +8,8 @@ import NonProfitHeader from './NonProfitHeader';
 import Stack from "@mui/material/Stack";
 
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 
 function VolunteerRegistration() {
   
@@ -16,9 +18,12 @@ function VolunteerRegistration() {
     description: '',
     image: '',
     image_type: '',
-    location: ''
+    location: '',
+    skills : ''
   });
 
+  const [applicationMessage, setApplicationMessage] = useState(null); // State to store application message
+  const [userId, setUserId] = useState(null);
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
 
@@ -65,6 +70,7 @@ function VolunteerRegistration() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (validate()) {
+      formData.user_id = userId;
       // Handle form submission, e.g., send data to backend or display a success message
       try {
         const response = await fetch('http://localhost:3001/Add/job', {
@@ -78,16 +84,36 @@ function VolunteerRegistration() {
         if (response.ok) {
           const data = await response.json();
           setMessage('Job Created');
-          navigate('/');
+          navigate('/nonprofithome');
         } else {
           const errorData = await response.json();
-          setMessage(`Registration failed: ${errorData.message}`);
+          setMessage(`Job Creation Failed: ${errorData.message}`);
         }
       } catch (error) {
-        setMessage(`Registration failed: ${error.message}`);
+        setMessage(`Job Creation failed: ${error.message}`);
       }
     }
   };
+
+  useEffect(() => {
+    const fetchUserDetails = () => {
+      const token = localStorage.getItem("token");
+      // console.log(token);
+      if (token) {
+        // console.log("token exists");
+        try {
+          const decodedToken = jwtDecode(token); // Decode JWT token using jwt-decode
+
+          // console.log(decodedToken);
+          // console.log(decodedToken.id);
+          setUserId(decodedToken.id);
+        } catch (error) {
+          console.error("Error decoding token:", error);
+        }
+      }
+    };
+    fetchUserDetails();
+  }, []);
 
   return (
     <>
@@ -149,22 +175,20 @@ function VolunteerRegistration() {
               helperText={errors.location}
             />
             
-            <Stack direction="column" alignItems="center" spacing={2}>
-                <label htmlFor="upload-image">
-                <Button variant="outlined" component="span">
-                    Upload Image
-                </Button>
-                <input
-                    id="upload-image"
-                    hidden
-                    accept="image/*"
-                    type="file"
-                    onChange={handleFileUpload}
-                />
-                </label>
-                
-                {imageUrl && <img width="m" src={imageUrl} alt="Uploaded Image" height="300" />}
-            </Stack>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="skills"
+              label="Skills Required"
+              name="skills"
+              autoComplete="Skills Required"
+              value={formData.skills}
+              onChange={handleChange}
+              error={Boolean(errors.skills)}
+              helperText={errors.skills}
+            />
             
             
             <Button

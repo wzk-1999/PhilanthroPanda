@@ -25,7 +25,8 @@ const Home = () => {
                 title={item.title}
                 description={item.description}
                 company={item.company}
-                imageurl={item.imageurl}
+                location={item.location}
+                skills={item.skills}
               ></JobCard>
             </Grid>
           ))}

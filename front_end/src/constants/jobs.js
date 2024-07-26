@@ -10,6 +10,13 @@ function useJobs() {
       }
       // const response = await fetch("/api/jobs");
       const data = await response.json();
+
+      if(data){
+        data.forEach(dt => {
+          //dt.imageurl = URL.createObjectURL(dt.image_type+dt.image);
+        });
+      }
+      
       //   console.log("Fetched jobs:", data); // Debugging log
       setJobs(data);
       // fetch("http://127.0.0.1:3001/api/jobs")

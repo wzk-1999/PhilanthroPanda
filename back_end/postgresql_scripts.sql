@@ -169,3 +169,5 @@ ALTER TABLE public.jobs ALTER COLUMN image TYPE bytea USING image::bytea;
 ALTER TABLE public.jobs ADD image_type varchar(100) NULL;
 COMMENT ON COLUMN public.jobs.image_type IS 'image type, format like: data:image/jpeg;base64';
 
+ALTER TABLE public.jobs ADD skills varchar(255) NULL;
+
