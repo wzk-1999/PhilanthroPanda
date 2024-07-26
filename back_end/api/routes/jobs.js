@@ -100,4 +100,26 @@ router.post("/jobs/search", async (req, res) => {
   }
 });
 
+// show all posted jobs
+
+router.post("/jobs/show", async (req, res) => {
+  const { user_id } = req.body;
+  try {
+    const showJobQuery = `select j.id
+                                    ,j.title
+                                    ,j.description
+                                    ,j.skills
+                                    ,j.location
+                                    ,j.user_id
+                            from jobs j
+                            where user_id=${user_id}`;
+    const { rows } = await db.query(showJobQuery);
+
+    res.status(200).json(rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
 module.exports = router;

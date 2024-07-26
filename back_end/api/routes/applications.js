@@ -78,4 +78,35 @@ router.post("/applied/alljobs", async (req, res) => {
   }
 });
 
+// view applied people
+
+router.post("/applied/allApplicants", async (req, res) => {
+  const { user_id, opportunity_id } = req.body;
+  try {
+    const appliedPeopleQuery = `select a.application_id
+                                    ,a.application_date
+                                    ,a.status
+                                    ,j.id
+                                    ,j.title
+                                    ,j.location
+                                    ,u.user_id
+                                    ,u.name applicant_name
+                                    ,u.email applicant_email
+                                    ,u.phone applicant_phone
+                          FROM applications a JOIN
+                          jobs j
+                          ON j.id = a.opportunity_id
+                          join users u on u.user_id=a.user_id
+                            where j.user_id=${user_id}
+                            and j.id=${opportunity_id}
+                            order by a.application_date desc`;
+    const { rows } = await db.query(appliedPeopleQuery);
+
+    res.status(200).json(rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
 module.exports = router;
