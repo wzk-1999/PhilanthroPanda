@@ -15,7 +15,7 @@ export default function JobCard(props) {
             {props.title}
           </Typography>
           <Typography gutterBottom variant="subtitle2" component="div">
-            {props.company}
+            {props.organization_name}
           </Typography>
           <Typography gutterBottom variant="subtitle2" component="div">
                 Location : {props.location}

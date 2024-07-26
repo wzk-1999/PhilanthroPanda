@@ -55,6 +55,8 @@ router.post("/applied/alljobs", async (req, res) => {
                                     ,j.id
                                     ,j.title
                                     ,j.location
+                                    ,j.description
+                                    ,j.skills
                                     ,u.name recruiter_name
                                     ,u.email 
                                     ,u.phone

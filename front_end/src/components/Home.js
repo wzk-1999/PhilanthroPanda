@@ -27,6 +27,7 @@ const Home = () => {
                 company={item.company}
                 location={item.location}
                 skills={item.skills}
+                organization_name={item.organization_name}
               ></JobCard>
             </Grid>
           ))}
