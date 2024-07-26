@@ -5,6 +5,7 @@ const db = require("../../repository/db");
 router.get("/api/jobs", async (req, res) => {
   try {
     const jobs = await db.query(`SELECT a.title ,
+                        a.id,
                         a.description ,
                         a.image,
                         a.image_type,
