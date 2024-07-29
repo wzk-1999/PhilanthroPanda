@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Grid } from '@mui/material';
+import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox } from '@mui/material';
 import NonProfitHeader from './NonProfitHeader'; 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import JobCard from "./JobCard";
 
-const NonProfitHome = () => {
+const ApplicantList = () => {
+  const [searchParams] = useSearchParams();
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,6 +13,7 @@ const NonProfitHome = () => {
 
   const navigate = useNavigate();
 
+  const id = searchParams.get("id");
 
     useEffect(() => {
         const fetchUserDetails = () => {
@@ -41,7 +42,7 @@ const NonProfitHome = () => {
         const checkApplicationStatus = async () => {
         if (!userId) return;
 
-        const trackUrl = `http://127.0.0.1:3001/jobs/show`;
+        const trackUrl = `http://127.0.0.1:3001/applied/allApplicants`;
 
         try {
             const response = await fetch(trackUrl, {
@@ -49,7 +50,7 @@ const NonProfitHome = () => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ user_id: userId }),
+            body: JSON.stringify({ user_id: userId, opportunity_id : id }),
             });
             const data = await response.json();
             // console.log("runed");
@@ -71,31 +72,45 @@ const NonProfitHome = () => {
     <>
       <NonProfitHeader headerNavigation="nonprofithome"/>
       <Container maxWidth="lg" sx={{ mt: 8 }}>
-        <Typography variant="h4" sx={{ mb: 4 }}>
-          Open Jobs
-        </Typography>
-        <Grid container spacing={4}>
-          {jobs.map((item) => (
-            <Grid
-              item
-              xs={6}
-              key={item.id}
-              id={item.id}
-              onClick={() => navigate(`/applicantList?id=${item.id}`)}
-            >
-            <JobCard
-              title={item.title}
-              description={item.description}
-              location={item.location}
-              skills={item.skills}
-              organization_name={item.organization_name}
-            ></JobCard>
-          </Grid>
-          ))}
-        </Grid>
+      <Container>
+      <Typography variant="h4" gutterBottom>
+        Job Applications
+      </Typography>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Application ID</TableCell>
+              <TableCell>Application Date</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Job Title</TableCell>
+              <TableCell>Location</TableCell>
+              <TableCell>Applicant Name</TableCell>
+              <TableCell>Applicant Email</TableCell>
+              <TableCell>Applicant Phone</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {jobs.map((application) => (
+              <TableRow key={application.application_id}>
+                
+                <TableCell>{application.application_id}</TableCell>
+                <TableCell>{new Date(application.application_date).toLocaleString()}</TableCell>
+                <TableCell>{application.status}</TableCell>
+                <TableCell>{application.title}</TableCell>
+                <TableCell>{application.location}</TableCell>
+                <TableCell>{application.applicant_name}</TableCell>
+                <TableCell>{application.applicant_email}</TableCell>
+                <TableCell>{application.applicant_phone}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
       </Container>
     </>
   );
 };
 
-export default NonProfitHome;
+export default ApplicantList;

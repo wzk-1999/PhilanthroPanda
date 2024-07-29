@@ -9,6 +9,7 @@ import NonProfitHome from "./components/NonProfitHome";
 import NewJob from "./components/NewJob";
 import AppliedJobs from "./components/AppliedJobs";
 import Search from "./components/Search";
+import ApplicantList from "./components/ApplicantList";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/NewJob" element={<NewJob />} />
         <Route path="/appliedJobs" element={<AppliedJobs />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/ApplicantList" element={<ApplicantList />} />
       </Routes>
     </Router>
   );
