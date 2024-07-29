@@ -10,6 +10,7 @@ router.get("/api/jobs", async (req, res) => {
                         a.image,
                         a.image_type,
                         a."location" ,
+                        a.skills,
                         o."name" organization_name 
                         FROM jobs a
                         left join

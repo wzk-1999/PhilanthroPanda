@@ -6,7 +6,7 @@ import { useNavigate,useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 
-const AllJobs = () => {
+const AppliedJobs = () => {
     const [searchParams] = useSearchParams();
     const [jobs, setJobs] = useState([]);
     const [userId, setUserId] = useState(null); 
@@ -95,4 +95,4 @@ const AllJobs = () => {
   );
 };
 
-export default AllJobs;
+export default AppliedJobs;
