@@ -50,10 +50,11 @@ router.get("/jobdescription/:id", async (req, res) => {
 });
 
 router.post("/Add/job", async (req, res) => {
-  const { title, description, image, image_type, location, user_id } = req.body;
+  const { title, description, image, image_type, location, user_id, skills } =
+    req.body;
   try {
     const insertJobQuery =
-      "INSERT INTO jobs(title, description, image,image_type, location, user_id) VALUES($1, $2, $3, $4, $5,$6)";
+      "INSERT INTO jobs(title, description, image,image_type, location, user_id,skills,status) VALUES($1, $2, $3, $4, $5,$6,$7,'normal')";
     await db.query(insertJobQuery, [
       title,
       description,
@@ -61,6 +62,7 @@ router.post("/Add/job", async (req, res) => {
       image_type,
       location,
       user_id,
+      skills,
     ]);
     res.status(201).json({ message: "job added successfully" });
   } catch (err) {

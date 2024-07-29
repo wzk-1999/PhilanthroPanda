@@ -171,3 +171,7 @@ COMMENT ON COLUMN public.jobs.image_type IS 'image type, format like: data:image
 
 ALTER TABLE public.jobs ADD skills varchar(255) NULL;
 
+pg_dump -U postgres -s -d PhilanthroPanda -f PhilanthroPanda.sql
+
+ALTER TABLE public.jobs ADD status varchar(50) NULL;
+COMMENT ON COLUMN public.jobs.status IS 'job status';

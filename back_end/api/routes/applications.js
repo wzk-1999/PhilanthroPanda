@@ -111,4 +111,49 @@ router.post("/applied/allApplicants", async (req, res) => {
   }
 });
 
+// accept an applicant
+
+router.post("/accept/applicant", async (req, res) => {
+  const { user_id, opportunity_id, applicant_id } = req.body;
+
+  try {
+    // Begin the transaction
+    await db.query("BEGIN");
+
+    // First update statement
+    const updateApplicationsQuery = `
+      UPDATE applications
+      SET status = 'accepted'
+      WHERE user_id = $1
+        AND opportunity_id = $2
+        AND application_id = $3;
+    `;
+    await db.query(updateApplicationsQuery, [
+      user_id,
+      opportunity_id,
+      applicant_id,
+    ]);
+
+    // Second update statement
+    const updateJobsQuery = `
+      UPDATE jobs
+      SET status = 'closed'
+      WHERE id = $1;
+    `;
+    await db.query(updateJobsQuery, [opportunity_id]);
+
+    // Commit the transaction
+    await db.query("COMMIT");
+
+    res
+      .status(200)
+      .send("Application status and job status have been successfully changed");
+  } catch (err) {
+    // Rollback the transaction in case of an error
+    await db.query("ROLLBACK");
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
 module.exports = router;
