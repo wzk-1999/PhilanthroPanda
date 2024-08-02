@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox } from '@mui/material';
+import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
 import NonProfitHeader from './NonProfitHeader'; 
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -68,6 +68,28 @@ const ApplicantList = () => {
         checkApplicationStatus();
     }, [userId]);
 
+    const handleApprove = async (applicationId) => {
+      try {
+        const response = await fetch(`http://127.0.0.1:3001/accept/applicant`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ application_id: applicationId,  user_id: userId, opportunity_id : id}),
+        });
+        if (response.ok) {
+          const updatedJobs = jobs.map((job) => 
+            job.application_id === applicationId ? { ...job, status: 'Approved' } : job
+          );
+          setJobs(updatedJobs);
+        } else {
+          console.error("Error approving application");
+        }
+      } catch (error) {
+        console.error("Error approving application:", error);
+      }
+    };
+
   return (
     <>
       <NonProfitHeader headerNavigation="nonprofithome"/>
@@ -88,6 +110,7 @@ const ApplicantList = () => {
               <TableCell>Applicant Name</TableCell>
               <TableCell>Applicant Email</TableCell>
               <TableCell>Applicant Phone</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -102,6 +125,16 @@ const ApplicantList = () => {
                 <TableCell>{application.applicant_name}</TableCell>
                 <TableCell>{application.applicant_email}</TableCell>
                 <TableCell>{application.applicant_phone}</TableCell>
+                <TableCell>
+                    <Button 
+                      variant="contained" 
+                      color="primary" 
+                      onClick={() => handleApprove(application.application_id)}
+                      disabled={application.status === 'Approved'}
+                    >
+                      Approve
+                    </Button>
+                  </TableCell>
               </TableRow>
             ))}
           </TableBody>

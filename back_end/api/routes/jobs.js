@@ -33,6 +33,7 @@ router.get("/jobdescription/:id", async (req, res) => {
                         a.image,
                         a.image_type,
                         a."location" ,
+                        a.skills,
                         o."name" organization_name 
                         FROM jobs a
                         left join
@@ -116,7 +117,7 @@ router.post("/jobs/show", async (req, res) => {
                                     ,j.location
                                     ,j.user_id
                             from jobs j
-                            where user_id=${user_id}`;
+                            where user_id=${user_id} order by j.id desc`;
     const { rows } = await db.query(showJobQuery);
 
     res.status(200).json(rows);

@@ -80,6 +80,39 @@ router.post("/applied/alljobs", async (req, res) => {
   }
 });
 
+router.post("/selected/jobs", async (req, res) => {
+  const { user_id } = req.body;
+  try {
+    const searchJobQuery = `select a.application_id
+                                    ,a.application_date
+                                    ,a.status
+                                    ,j.id
+                                    ,j.title
+                                    ,j.location
+                                    ,j.description
+                                    ,j.skills
+                                    ,u.name recruiter_name
+                                    ,u.email 
+                                    ,u.phone
+                                    ,o.name company_name
+                          FROM applications a JOIN
+                          jobs j
+                          ON j.id = a.opportunity_id
+                          join users u on u.user_id=j.user_id
+                          join organizations o on o.organization_id=u.organization_id
+                            where a.user_id=${user_id} and a.status = 'accepted'
+                            order by a.application_date desc`;
+    const { rows } = await db.query(searchJobQuery);
+    if (rows.length > 0) {
+      res.status(200).json(rows);
+    } else {
+      res.status(404).json({ message: "you didn't applied any jobs yet" });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
 // view applied people
 
 router.post("/applied/allApplicants", async (req, res) => {
@@ -114,7 +147,7 @@ router.post("/applied/allApplicants", async (req, res) => {
 // accept an applicant
 
 router.post("/accept/applicant", async (req, res) => {
-  const { user_id, opportunity_id, applicant_id } = req.body;
+  const { user_id, opportunity_id, application_id } = req.body;
 
   try {
     // Begin the transaction
@@ -124,14 +157,12 @@ router.post("/accept/applicant", async (req, res) => {
     const updateApplicationsQuery = `
       UPDATE applications
       SET status = 'accepted'
-      WHERE user_id = $1
-        AND opportunity_id = $2
-        AND application_id = $3;
+      WHERE opportunity_id = $1
+        AND application_id = $2;
     `;
     await db.query(updateApplicationsQuery, [
-      user_id,
       opportunity_id,
-      applicant_id,
+      application_id,
     ]);
 
     // Second update statement
