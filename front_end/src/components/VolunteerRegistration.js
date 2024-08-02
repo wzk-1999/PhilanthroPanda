@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import DefaultHeader from './DefaultHeader';
+import React, { useState } from "react";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import DefaultHeader from "./DefaultHeader";
 
 import { useNavigate } from "react-router-dom";
 
 function VolunteerRegistration() {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    password: '',
-    confirmPassword: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState({});
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
   const handleChange = (event) => {
@@ -33,22 +33,22 @@ function VolunteerRegistration() {
   const validate = () => {
     const newErrors = {};
     if (!formData.firstName) {
-      newErrors.firstName = 'First Name is required';
+      newErrors.firstName = "First Name is required";
     }
     if (!formData.lastName) {
-      newErrors.lastName = 'Last Name is required';
+      newErrors.lastName = "Last Name is required";
     }
     if (!formData.email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     }
     if (!formData.phone) {
-      newErrors.phone = 'Phone Number is required';
+      newErrors.phone = "Phone Number is required";
     }
     if (formData.password !== formData.confirmPassword) {
-      newErrors.password = 'Passwords do not match';
-      newErrors.confirmPassword = 'Passwords do not match';
+      newErrors.password = "Passwords do not match";
+      newErrors.confirmPassword = "Passwords do not match";
     }
-    formData.name = formData.firstName + ' ' + formData.lastName;
+    formData.name = formData.firstName + " " + formData.lastName;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -58,18 +58,19 @@ function VolunteerRegistration() {
     if (validate()) {
       // Handle form submission, e.g., send data to backend or display a success message
       try {
-        const response = await fetch('http://localhost:3001/register/volunteer', {
-          method: 'POST',
+        const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+        const response = await fetch(`${API_BASE_URL}/register/volunteer`, {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
         });
 
         if (response.ok) {
           const data = await response.json();
-          setMessage('Registration successful!');
-          navigate('/');
+          setMessage("Registration successful!");
+          navigate("/");
         } else {
           const errorData = await response.json();
           setMessage(`Registration failed: ${errorData.message}`);
@@ -87,9 +88,9 @@ function VolunteerRegistration() {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           <Typography component="h1" variant="h5">
@@ -154,16 +155,16 @@ function VolunteerRegistration() {
               helperText={errors.phone}
             />
             <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="address"
-                label="Address"
-                name="address"
-                autoComplete="address"
-                value={formData.address}
-                onChange={handleChange}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="address"
+              label="Address"
+              name="address"
+              autoComplete="address"
+              value={formData.address}
+              onChange={handleChange}
             />
             <TextField
               variant="outlined"

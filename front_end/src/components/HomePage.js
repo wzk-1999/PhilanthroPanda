@@ -22,7 +22,8 @@ function HomePage() {
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
     const loginData = { email, password };
-    const url = "http://localhost:3001/login"; // Adjust URL if needed based on loginType
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+    const url = `${API_BASE_URL}/login`; // Adjust URL if needed based on loginType
 
     try {
       const response = await fetch(url, {

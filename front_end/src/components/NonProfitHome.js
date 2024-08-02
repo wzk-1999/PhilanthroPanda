@@ -40,7 +40,7 @@ const NonProfitHome = () => {
     const checkApplicationStatus = async () => {
       if (!userId) return;
       const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-      const trackUrl = `http://127.0.0.1:3001/jobs/show`;
+      const trackUrl = `${API_BASE_URL}/jobs/show`;
 
       try {
         const response = await fetch(trackUrl, {

@@ -42,7 +42,7 @@ const AppliedJobs = () => {
     const checkApplicationStatus = async () => {
       if (!userId) return;
       const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-      const trackUrl = `http://127.0.0.1:3001/applied/alljobs`;
+      const trackUrl = `${API_BASE_URL}/applied/alljobs`;
 
       try {
         const response = await fetch(trackUrl, {

@@ -39,9 +39,7 @@ export default function JobDescription() {
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3001/jobdescription/${id}`
-        );
+        const response = await fetch(`${API_BASE_URL}/jobdescription/${id}`);
         const data = await response.json();
         setJobs(data[0]);
       } catch (error) {
@@ -75,7 +73,7 @@ export default function JobDescription() {
     const checkApplicationStatus = async () => {
       if (!userId) return;
 
-      const trackUrl = `http://127.0.0.1:3001/trackStatus/${id}`;
+      const trackUrl = `${API_BASE_URL}/trackStatus/${id}`;
 
       try {
         const response = await fetch(trackUrl, {
@@ -90,7 +88,7 @@ export default function JobDescription() {
         // console.log(data);
         if (data.length > 0) {
           setApplied(true);
-          if(data[0].status == 'accepted'){
+          if (data[0].status == "accepted") {
             setAccepted(true);
           }
           // console.log("applied");
@@ -109,7 +107,7 @@ export default function JobDescription() {
       console.error("User ID not found");
       return;
     }
-    const applyUrl = `http://127.0.0.1:3001/apply/${id}`;
+    const applyUrl = `${API_BASE_URL}/apply/${id}`;
 
     try {
       const response = await fetch(applyUrl, {
@@ -142,7 +140,7 @@ export default function JobDescription() {
       console.error("User ID not found");
       return;
     }
-    const trackUrl = `http://127.0.0.1:3001/trackStatus/${id}`;
+    const trackUrl = `${API_BASE_URL}/trackStatus/${id}`;
 
     try {
       const response = await fetch(trackUrl, {

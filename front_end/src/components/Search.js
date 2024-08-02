@@ -42,7 +42,7 @@ const Search = () => {
     const checkApplicationStatus = async () => {
       if (!userId) return;
       const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-      const trackUrl = `http://127.0.0.1:3001/jobs/search`;
+      const trackUrl = `${API_BASE_URL}/jobs/search`;
 
       try {
         const response = await fetch(trackUrl, {

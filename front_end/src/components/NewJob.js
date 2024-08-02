@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import NonProfitHeader from './NonProfitHeader';
+import React, { useState } from "react";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import NonProfitHeader from "./NonProfitHeader";
 import Stack from "@mui/material/Stack";
 
 import { useNavigate } from "react-router-dom";
@@ -12,20 +12,19 @@ import { useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 
 function VolunteerRegistration() {
-  
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    image: '',
-    image_type: '',
-    location: '',
-    skills : ''
+    title: "",
+    description: "",
+    image: "",
+    image_type: "",
+    location: "",
+    skills: "",
   });
 
   const [applicationMessage, setApplicationMessage] = useState(null); // State to store application message
   const [userId, setUserId] = useState(null);
   const [errors, setErrors] = useState({});
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
   const handleChange = (event) => {
@@ -39,13 +38,13 @@ function VolunteerRegistration() {
   const validate = () => {
     const newErrors = {};
     if (!formData.title) {
-      newErrors.firstName = 'Title is required';
+      newErrors.firstName = "Title is required";
     }
     if (!formData.description) {
-      newErrors.description = 'Description is required';
+      newErrors.description = "Description is required";
     }
     if (!formData.location) {
-      newErrors.email = 'Location is required';
+      newErrors.email = "Location is required";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -58,8 +57,8 @@ function VolunteerRegistration() {
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      let body = reader.result.split(',');
-      formData.image_type = body[0]+',';
+      let body = reader.result.split(",");
+      formData.image_type = body[0] + ",";
       formData.image = body[1];
       setImageUrl(reader.result);
     };
@@ -73,18 +72,19 @@ function VolunteerRegistration() {
       formData.user_id = userId;
       // Handle form submission, e.g., send data to backend or display a success message
       try {
-        const response = await fetch('http://localhost:3001/Add/job', {
-          method: 'POST',
+        const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+        const response = await fetch(`${API_BASE_URL}/Add/job`, {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
         });
 
         if (response.ok) {
           const data = await response.json();
-          setMessage('Job Created');
-          navigate('/nonprofithome');
+          setMessage("Job Created");
+          navigate("/nonprofithome");
         } else {
           const errorData = await response.json();
           setMessage(`Job Creation Failed: ${errorData.message}`);
@@ -122,9 +122,9 @@ function VolunteerRegistration() {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           <Typography component="h1" variant="h5">
@@ -174,7 +174,7 @@ function VolunteerRegistration() {
               error={Boolean(errors.location)}
               helperText={errors.location}
             />
-            
+
             <TextField
               variant="outlined"
               margin="normal"
@@ -189,8 +189,7 @@ function VolunteerRegistration() {
               error={Boolean(errors.skills)}
               helperText={errors.skills}
             />
-            
-            
+
             <Button
               type="submit"
               fullWidth
@@ -200,13 +199,12 @@ function VolunteerRegistration() {
             >
               Post New Job
             </Button>
-            
+
             {message && (
-            <Typography color="error" sx={{ mt: 2 }}>
-              {message}
-            </Typography>
+              <Typography color="error" sx={{ mt: 2 }}>
+                {message}
+              </Typography>
             )}
-            
           </Box>
         </Box>
       </Container>

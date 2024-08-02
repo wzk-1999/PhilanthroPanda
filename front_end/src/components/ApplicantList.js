@@ -24,7 +24,7 @@ const ApplicantList = () => {
   const navigate = useNavigate();
 
   const id = searchParams.get("id");
-
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   useEffect(() => {
     const fetchUserDetails = () => {
       const token = localStorage.getItem("token");
@@ -51,8 +51,8 @@ const ApplicantList = () => {
   useEffect(() => {
     const checkApplicationStatus = async () => {
       if (!userId) return;
-      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-      const trackUrl = `http://127.0.0.1:3001/applied/allApplicants`;
+
+      const trackUrl = `${API_BASE_URL}/applied/allApplicants`;
 
       try {
         const response = await fetch(trackUrl, {
@@ -80,7 +80,7 @@ const ApplicantList = () => {
 
   const handleApprove = async (applicationId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:3001/accept/applicant`, {
+      const response = await fetch(`${API_BASE_URL}/accept/applicant`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
