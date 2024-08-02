@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const app = express();
-const port = process.env.port;
+const port = process.env.port || 3001;
 
 // Middleware
 app.use(bodyParser.json({ limit: "50mb" }));
