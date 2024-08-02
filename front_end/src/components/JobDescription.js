@@ -33,7 +33,7 @@ export default function JobDescription() {
   const [applied, setApplied] = useState(false); // State to track if user has applied
 
   const id = searchParams.get("id");
-
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   // Fetch job details
   useEffect(() => {
     const fetchJob = async () => {
@@ -197,16 +197,20 @@ export default function JobDescription() {
               <Typography gutterBottom variant="subtitle2" component="div">
                 Location : {job.location}
               </Typography>
-              <Typography sx={{
-                    maxheight: '400px', // set your desired height
-                    overflowY: 'auto', // enable vertical scrolling
-                    padding: '10px', // optional padding
-                    border: '1px solid #ccc', // optional border for better visibility
-                    borderRadius: '4px', // optional border radius
-                  }} variant="body2" color="text.secondary">
+              <Typography
+                sx={{
+                  maxheight: "400px", // set your desired height
+                  overflowY: "auto", // enable vertical scrolling
+                  padding: "10px", // optional padding
+                  border: "1px solid #ccc", // optional border for better visibility
+                  borderRadius: "4px", // optional border radius
+                }}
+                variant="body2"
+                color="text.secondary"
+              >
                 {job.description}
               </Typography>
-              <Typography sx={{mt : 2}} variant="body2" color="text.secondary">
+              <Typography sx={{ mt: 2 }} variant="body2" color="text.secondary">
                 Skills Required : {job.skills}
               </Typography>
             </CardContent>
@@ -220,7 +224,7 @@ export default function JobDescription() {
               gap: 2,
               mr: 20,
               mt: 5,
-              mb: 5
+              mb: 5,
             }}
           >
             {!applied && (
