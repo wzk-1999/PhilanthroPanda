@@ -14,7 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
 
 const pages = ["Jobs Posted", "Post new Job"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Profile", "Logout"];
 
 function NonProfitHeader({headerNavigation}) {
   const [anchorElUser, setAnchorElUser] = React.useState(null);

@@ -31,6 +31,7 @@ export default function JobDescription() {
   const [statusInfo, setStatusInfo] = useState(null); // State to store status info
   const [modalOpen, setModalOpen] = useState(false); // State to control modal visibility
   const [applied, setApplied] = useState(false); // State to track if user has applied
+  const [accepted, setAccepted] = useState(false);
 
   const id = searchParams.get("id");
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -89,6 +90,9 @@ export default function JobDescription() {
         // console.log(data);
         if (data.length > 0) {
           setApplied(true);
+          if(data[0].status == 'accepted'){
+            setAccepted(true);
+          }
           // console.log("applied");
         } else {
           setApplied(false);
@@ -227,7 +231,7 @@ export default function JobDescription() {
               mb: 5,
             }}
           >
-            {!applied && (
+            {!applied && !accepted && (
               <Button
                 variant="contained"
                 color="primary"
@@ -236,13 +240,22 @@ export default function JobDescription() {
                 Apply Now
               </Button>
             )}
-            {applied && (
+            {applied && !accepted && (
               <Button
                 variant="contained"
                 color="secondary"
                 onClick={handleTrackProgressClick}
               >
                 Track Progress
+              </Button>
+            )}
+            {applied && accepted && (
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleTrackProgressClick}
+              >
+                You are Hired!
               </Button>
             )}
           </Box>

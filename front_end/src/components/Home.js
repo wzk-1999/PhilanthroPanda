@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <div>
       <ResponsiveAppBar></ResponsiveAppBar>
-      <Box height={600} overflow={'auto'}  sx={{ my: 2, mx: 30 }}>
+      <Box height={800} overflow={'auto'}  sx={{ my: 2, mx: 30 }}>
         <Grid container spacing={2}>
           {jobs.map((item) => (
             <Grid

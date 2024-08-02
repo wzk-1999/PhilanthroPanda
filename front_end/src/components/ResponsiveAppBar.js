@@ -5,7 +5,6 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -16,8 +15,8 @@ import TextField from "@mui/material/TextField";
 
 import { useNavigate } from "react-router-dom";
 
-const pages = ["Best-Matches", "Most-Recent", "Applied", "Saved"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = ["Home", "Applied"];
+const settings = ["Profile", "Logout"];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -34,7 +33,7 @@ function ResponsiveAppBar() {
 
   const handleNavClick = (event) => {
     setAnchorElNav(null);
-    if (event.currentTarget.id === "Best-Matches") {
+    if (event.currentTarget.id === "Home") {
       navigate("/home");
     } else if(event.currentTarget.id === "Applied"){
       navigate("/appliedJobs");

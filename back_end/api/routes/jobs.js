@@ -18,7 +18,8 @@ router.get("/api/jobs", async (req, res) => {
                         on a.user_id =u.user_id 
                         left join 
                         organizations o 
-                        on o.organization_id =u.organization_id`);
+                        on o.organization_id =u.organization_id 
+                        where a.status != 'closed'`);
     res.json(jobs.rows);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch jobs" });
@@ -33,6 +34,7 @@ router.get("/jobdescription/:id", async (req, res) => {
                         a.image,
                         a.image_type,
                         a."location" ,
+                        a.skills,
                         o."name" organization_name 
                         FROM jobs a
                         left join
@@ -86,10 +88,10 @@ router.post("/jobs/search", async (req, res) => {
                             on u.user_id=j.user_id
                             join organizations o
                             on o.organization_id=u.organization_id
-                            where j.title ilike '%${searchWord}%'
+                            where j.status != 'closed' and (j.title ilike '%${searchWord}%'
                             or j.description ilike '%${searchWord}%'
                             or j.skills ilike '%${searchWord}%'
-                            or o.name ilike '%${searchWord}%'`;
+                            or o.name ilike '%${searchWord}%')`;
     const { rows } = await db.query(searchJobQuery);
     if (rows.length > 0) {
       res.status(200).json(rows);
@@ -116,7 +118,7 @@ router.post("/jobs/show", async (req, res) => {
                                     ,j.location
                                     ,j.user_id
                             from jobs j
-                            where user_id=${user_id}`;
+                            where user_id=${user_id} order by j.id desc`;
     const { rows } = await db.query(showJobQuery);
 
     res.status(200).json(rows);
