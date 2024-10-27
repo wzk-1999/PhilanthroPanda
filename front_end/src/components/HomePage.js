@@ -6,7 +6,13 @@ import {
   Grid,
   TextField,
   Typography,
+  IconButton,
 } from "@mui/material";
+import {
+  GitHub as GitHubIcon,
+  Google as GoogleIcon,
+} from "@mui/icons-material";
+
 import DefaultHeader from "./DefaultHeader";
 
 import { useNavigate } from "react-router-dom";
@@ -16,13 +22,13 @@ function HomePage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const navigate = useNavigate();
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
     const loginData = { email, password };
-    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
     const url = `${API_BASE_URL}/login`; // Adjust URL if needed based on loginType
 
     try {
@@ -52,6 +58,14 @@ function HomePage() {
       setMessage("Login Failed");
       // Handle login error (e.g., show error message)
     }
+  };
+
+  const handleGitHubLogin = () => {
+    window.location.href = `${API_BASE_URL}/auth/github`; // Backend GitHub OAuth2 endpoint
+  };
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${API_BASE_URL}/auth/google`; // Backend google OAuth2 endpoint
   };
 
   const renderLoginForm = () => {
@@ -106,6 +120,31 @@ function HomePage() {
             {message}
           </Typography>
         )}
+        <Typography variant="body2" sx={{ mt: 2, mb: 2 }}>
+          Log in using a third-party account:
+        </Typography>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <IconButton
+            sx={{
+              backgroundColor: "black",
+              color: "white",
+              "&:hover": { backgroundColor: "gray" },
+            }}
+            onClick={handleGitHubLogin}
+          >
+            <GitHubIcon />
+          </IconButton>
+          <IconButton
+            sx={{
+              backgroundColor: "black",
+              color: "white",
+              "&:hover": { backgroundColor: "gray" },
+            }}
+            onClick={handleGoogleLogin}
+          >
+            <GoogleIcon />
+          </IconButton>
+        </Box>
       </Box>
     );
   };

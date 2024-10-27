@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
-
+import { jwtDecode } from "jwt-decode"; // 安装jwt-decode: npm install jwt-decode
 
 import { useNavigate } from "react-router-dom";
 
@@ -19,10 +19,16 @@ const pages = ["Home", "Applied"];
 const settings = ["Profile", "Logout"];
 
 function ResponsiveAppBar() {
+  // 解析JWT中的用户名
+  const token = localStorage.getItem("token");
+  const decoded = token ? jwtDecode(token) : null;
+  console.log("User ID:", decoded.id); // User ID from JWT
+  console.log("User Name:", decoded.name); // User Name from JWT
+  const userInitial = decoded.name ? decoded.name.charAt(0).toUpperCase() : ""; // 获取用户名首字母
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [searchQuery, setSearchQuery] = React.useState("");
-
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -35,7 +41,7 @@ function ResponsiveAppBar() {
     setAnchorElNav(null);
     if (event.currentTarget.id === "Home") {
       navigate("/home");
-    } else if(event.currentTarget.id === "Applied"){
+    } else if (event.currentTarget.id === "Applied") {
       navigate("/appliedJobs");
     }
   };
@@ -46,7 +52,7 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
     if (event.currentTarget.id === "Profile") {
       navigate("/profile");
-    } else if(event.currentTarget.id === "Logout"){
+    } else if (event.currentTarget.id === "Logout") {
       navigate("/");
     }
   };
@@ -59,7 +65,7 @@ function ResponsiveAppBar() {
     event.preventDefault();
     // Implement search functionality here
     console.log("Search query submitted:", searchQuery);
-    navigate('/search?key='+searchQuery);
+    navigate("/search?key=" + searchQuery);
   };
 
   return (
@@ -107,7 +113,7 @@ function ResponsiveAppBar() {
               </Button>
             ))}
           </Box>
-          
+
           <Box
             component="form"
             onSubmit={handleSearchSubmit}
@@ -126,7 +132,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/Profile.jpeg" />
+                <Avatar>{userInitial}</Avatar>
               </IconButton>
             </Tooltip>
             <Menu

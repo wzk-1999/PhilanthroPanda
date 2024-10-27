@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("../../repository/db");
+const passport = require("../../config/authConfig"); // Adjust path to your auth config file
 
 const jwtSecret = process.env.jwt_secret;
 
@@ -109,5 +110,54 @@ router.post("/login", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
+const frontendURL = process.env.FRONTEND_URL || "http://localhost:3000";
+
+router.get(
+  "/auth/github",
+  passport.authenticate("github", { scope: ["user:email"] })
+);
+
+// GitHub OAuth2 Callback Route
+router.get(
+  "/auth/github/callback",
+  passport.authenticate("github", { failureRedirect: "/" }),
+  (req, res) => {
+    if (!req.user) {
+      return res.redirect("/?error=Authentication%20Failed");
+    }
+    // console.log(req.user.name); // Log the user here to see the profile
+    // Generate JWT token with name from req.user
+    const token = jwt.sign(
+      { id: req.user.user_id, name: req.user.name },
+      jwtSecret,
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    // Redirect to frontend with token in query params
+
+    res.redirect(`${frontendURL}/dashboard?token=${token}`);
+  }
+);
+
+// Initiate Google authentication
+router.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+// Google OAuth callback
+router.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/" }),
+  (req, res) => {
+    const token = jwt.sign({ name: req.user.name }, jwtSecret, {
+      expiresIn: "1h",
+    });
+    res.redirect(`${frontendURL}/dashboard?token=${token}`); // Redirect to frontend with token
+  }
+);
 
 module.exports = router;
